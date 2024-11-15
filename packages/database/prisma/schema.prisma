@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
@@ -12,10 +9,145 @@ datasource db {
   relationMode = "prisma"
 }
 
-// This is a stub model.
-// Delete it and add your own Prisma models.
-model Page {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
+// Enums
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum ProjectRole {
+  OWNER
+  MEMBER
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+// User model
+model User {
+  id    String   @id // Matches Clerk user ID
+  email String   @unique
   name  String?
+  role  UserRole @default(USER)
+
+  // Relations
+  projects        ProjectMember[]
+  ticketsCreated  SupportTicket[] @relation("TicketsCreated")
+  ticketsAssigned SupportTicket[] @relation("TicketsAssigned")
+  comments        Comment[]
+}
+
+// Project model
+model Project {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  url         String?
+
+  // Relations
+  members        ProjectMember[]
+  subscription   Subscription?
+  supportTickets SupportTicket[]
+  comments       Comment[]
+}
+
+// Join table for User and Project
+model ProjectMember {
+  userId    String
+  projectId String
+  role      ProjectRole
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [id])
+  project Project @relation(fields: [projectId], references: [id])
+
+  @@id([userId, projectId])
+  @@index([userId])
+  @@index([projectId])
+}
+
+// Subscription model
+model Subscription {
+  id                   String   @id @default(uuid())
+  stripeSubscriptionId String   @unique
+  stripeCustomerId     String
+  stripePlanId         String
+  status               String
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  // Relations
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId String  @unique
+
+  @@index([projectId])
+}
+
+// SupportTicket model
+model SupportTicket {
+  id          String         @id @default(uuid())
+  title       String
+  description String
+  status      TicketStatus   @default(OPEN)
+  priority    TicketPriority @default(MEDIUM)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  // Relations
+  project      Project   @relation(fields: [projectId], references: [id])
+  projectId    String
+  createdBy    User      @relation("TicketsCreated", fields: [createdById], references: [id])
+  createdById  String
+  assignedTo   User?     @relation("TicketsAssigned", fields: [assignedToId], references: [id])
+  assignedToId String?
+  comments     Comment[]
+
+  @@index([projectId])
+  @@index([createdById])
+  @@index([assignedToId])
+}
+
+// Comment model
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  // Relations
+  author          User           @relation(fields: [authorId], references: [id])
+  authorId        String
+  project         Project?       @relation(fields: [projectId], references: [id])
+  projectId       String?
+  supportTicket   SupportTicket? @relation(fields: [supportTicketId], references: [id])
+  supportTicketId String?
+
+  @@index([authorId])
+  @@index([projectId])
+  @@index([supportTicketId])
+}
+
+// Lead model
+model Lead {
+  id         String   @id @default(uuid())
+  name       String
+  email      String
+  phone      String?
+  company    String?
+  websiteUrl String?
+  message    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([email])
 }

@@ -1,18 +1,19 @@
-import { database } from '@repo/database';
+import { database } from "@repo/database";
 
 export const POST = async () => {
-  const newPage = await database.page.create({
+  const newUser = await database.user.create({
     data: {
-      name: 'cron-temp',
-      email: 'test@test.com',
+      name: "cron-temp",
+      email: "test@test.com",
+      id: "cron-temp",
     },
   });
 
-  await database.page.delete({
+  await database.user.delete({
     where: {
-      id: newPage.id,
+      id: newUser.id,
     },
   });
 
-  return new Response('OK', { status: 200 });
+  return new Response("OK", { status: 200 });
 };

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { ModeToggle } from '@repo/design-system/components/mode-toggle';
-import { Button } from '@repo/design-system/components/ui/button';
+import { ModeToggle } from "@repo/design-system/components/mode-toggle";
+import { Button } from "@repo/design-system/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -9,53 +9,53 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from '@repo/design-system/components/ui/navigation-menu';
-import { env } from '@repo/env';
-import { Menu, MoveRight, X } from 'lucide-react';
-import Link from 'next/link';
-import { useState } from 'react';
+} from "@repo/design-system/components/ui/navigation-menu";
+import { env } from "@repo/env";
+import { Menu, MoveRight, X } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
-import Image from 'next/image';
-import Logo from './logo.svg';
+import Image from "next/image";
+import Logo from "./logo.svg";
 
 export const Header = () => {
   const navigationItems = [
     {
-      title: 'Home',
-      href: '/',
-      description: '',
+      title: "Home",
+      href: "/",
+      description: "",
     },
     {
-      title: 'Product',
-      description: 'Managing a small business today is already tough.',
+      title: "Product",
+      description: "Managing a small business today is already tough.",
       items: [
         {
-          title: 'Pricing',
-          href: '/pricing',
+          title: "Pricing",
+          href: "/pricing",
         },
         {
-          title: 'Pricing',
-          href: '/pricing',
+          title: "Pricing",
+          href: "/pricing",
         },
         {
-          title: 'Pricing',
-          href: '/pricing',
+          title: "Pricing",
+          href: "/pricing",
         },
         {
-          title: 'Pricing',
-          href: '/pricing',
+          title: "Pricing",
+          href: "/pricing",
         },
       ],
     },
     {
-      title: 'Blog',
-      href: '/blog',
-      description: '',
+      title: "Blog",
+      href: "/blog",
+      description: "",
     },
     {
-      title: 'Docs',
+      title: "Docs",
       href: env.NEXT_PUBLIC_DOCS_URL,
-      description: '',
+      description: "",
     },
   ];
 
@@ -95,10 +95,10 @@ export const Header = () => {
                             </Button>
                           </div>
                           <div className="flex h-full flex-col justify-end text-sm">
-                            {item.items?.map((subItem) => (
+                            {item.items?.map((subItem, index) => (
                               <NavigationMenuLink
                                 href={subItem.href}
-                                key={subItem.title}
+                                key={subItem.title + index}
                                 className="flex flex-row items-center justify-between rounded px-4 py-2 hover:bg-muted"
                               >
                                 <span>{subItem.title}</span>
@@ -152,11 +152,11 @@ export const Header = () => {
                         href={item.href}
                         className="flex items-center justify-between"
                         target={
-                          item.href.startsWith('http') ? '_blank' : undefined
+                          item.href.startsWith("http") ? "_blank" : undefined
                         }
                         rel={
-                          item.href.startsWith('http')
-                            ? 'noopener noreferrer'
+                          item.href.startsWith("http")
+                            ? "noopener noreferrer"
                             : undefined
                         }
                       >

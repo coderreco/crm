@@ -1,11 +1,11 @@
-import arcjet, {detectBot, slidingWindow} from "@/lib/arcjet";
+import arcjet, { detectBot, slidingWindow } from "@/lib/arcjet";
 import { request } from "@arcjet/next";
-import { auth, currentUser } from '@clerk/nextjs/server';
-import { SidebarProvider } from '@repo/design-system/components/ui/sidebar';
-import { showBetaFeature } from '@repo/feature-flags';
-import type { ReactElement, ReactNode } from 'react';
-import { PostHogIdentifier } from './components/posthog-identifier';
-import { GlobalSidebar } from './components/sidebar';
+import { auth, currentUser } from "@clerk/nextjs/server";
+import { SidebarProvider } from "@repo/design-system/components/ui/sidebar";
+import { showBetaFeature } from "@repo/feature-flags";
+import type { ReactElement, ReactNode } from "react";
+import { PostHogIdentifier } from "./components/posthog-identifier";
+import { GlobalSidebar } from "./components/sidebar";
 
 type AppLayoutProperties = {
   readonly children: ReactNode;
@@ -16,8 +16,8 @@ const aj = arcjet.withRule(
     mode: "LIVE",
     // Allow preview links to show OG images, but no other bots should be
     // allowed. See https://docs.arcjet.com/bot-protection/identifying-bots
-    allow: ["CATEGORY:PREVIEW"]
-  }),
+    allow: ["CATEGORY:PREVIEW"],
+  })
 );
 
 const AppLayout = async ({
@@ -32,6 +32,7 @@ const AppLayout = async ({
     if (decision.reason.isBot()) {
       throw new Error("No bots allowed");
     } else {
+      console.error(decision.reason);
       throw new Error("Access denied");
     }
   }

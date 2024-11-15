@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import type { ReactElement } from "react";
 import PageWrapper from "@repo/design-system/components/templates/page-template";
 
-const title = "Dashboard";
-const description = "Cleaning Website Templates";
+const title = "Projects";
+const description = "Your projects";
 
 export const metadata: Metadata = {
   title,
@@ -16,8 +16,8 @@ const App = async (): Promise<ReactElement> => {
   return (
     <PageWrapper
       breadcrumbs={[
-        { text: "Home", type: "link", href: "/" },
-        { text: "Dashboard", type: "page" },
+        { text: "Dashboard", type: "link", href: "/" },
+        { text: "Projects", type: "page" },
       ]}
     >
       <h1 className="text-2xl font-bold">{title}</h1>

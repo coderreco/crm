@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description,
 };
 
+// const breadcrumbs =
+
 const App = async (): Promise<ReactElement> => {
   // const pages = await database.page.findMany();
 
@@ -17,7 +19,8 @@ const App = async (): Promise<ReactElement> => {
     <PageWrapper
       breadcrumbs={[
         { text: "Home", type: "link", href: "/" },
-        { text: "Dashboard", type: "page" },
+        { text: "Profile", type: "link", href: "/profile" },
+        { text: "Onboarding", type: "page" },
       ]}
     >
       <h1 className="text-2xl font-bold">{title}</h1>
