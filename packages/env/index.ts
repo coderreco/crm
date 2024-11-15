@@ -4,14 +4,12 @@ import { z } from "zod";
 const server: Parameters<typeof createEnv>[0]["server"] = {
   CLERK_SECRET_KEY: z
     .string({ required_error: "sk_ or sk_test_" })
-    .min(1)
-    .startsWith("sk_" || "sk_test_"),
+    .startsWith("sk_")
+    .or(z.string().startsWith("sk_test_")),
   CLERK_WEBHOOK_SECRET: z.string().min(1).startsWith("whsec_"),
-  RESEND_AUDIENCE_ID: z
-    .string({
-      required_error: "Required for Resend",
-    })
-    .min(1),
+  RESEND_AUDIENCE_ID: z.string({
+    required_error: "Required for Resend",
+  }),
   RESEND_FROM: z.string().min(1).email(),
   DATABASE_URL: z.string().min(1).url(),
   RESEND_TOKEN: z.string().min(1).startsWith("re_"),
@@ -33,11 +31,9 @@ const server: Parameters<typeof createEnv>[0]["server"] = {
   // Added by Vercel
   VERCEL: z.string().optional(),
   NEXT_RUNTIME: z.enum(["nodejs", "edge"]).optional(),
-  FLAGS_SECRET: z
-    .string({
-      required_error: "Required for Feature Flags",
-    })
-    .min(1),
+  FLAGS_SECRET: z.string({
+    required_error: "Required for Feature Flags",
+  }),
 };
 
 const client: Parameters<typeof createEnv>[0]["client"] = {
